@@ -3,7 +3,10 @@ from ttb.callback import TelegramBotCallback
 # tensorflow와 tf.keras를 임포트합니다
 import tensorflow as tf
 from tensorflow import keras
-token = "1101576531:AAHbFUk8eu7d6Lh6W-RQC4jkdtE7ev3rAR8"
+
+token = "your token"
+if token == "your token":
+  print("read instructions in the https://github.com/Yeachan-Heo/Tensorflow-Telegram-Bot.git, you have to use your token")
 # 헬퍼(helper) 라이브러리를 임포트합니다
 import matplotlib.pyplot as plt
 
