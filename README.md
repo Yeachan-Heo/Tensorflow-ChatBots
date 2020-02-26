@@ -18,5 +18,5 @@ Telegram Chatbot class which can be used as keras custom callback.
 #### 8.enjoy your training  
 #### 9.you're welcome XD  
 
-![Alt Image text](/example-1.png?raw=true "example")
-![Alt Image text](/example-2.png?raw=true)
+![Alt Image text](/example-1.jpg?raw=true "example")
+![Alt Image text](/example-2.jpg?raw=true)
