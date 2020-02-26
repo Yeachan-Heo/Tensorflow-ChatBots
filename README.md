@@ -10,7 +10,7 @@ Telegram Chatbot class which can be used as keras custom callback.
 # How to use
 #### 1.create your Telegram bot and get it's token as explained in https://telegram.org/faq#bots  
 #### 2.add your bot as your telegram friend  
-#### 3.go to your code, add "import ttb" at the top 
+#### 3.go to your code, add "from ttb import TelegramBotCallback" at the top 
 #### 4.and add TelegramBotCallback(token="your token") to callbacks when calling Model.fit() method.
 #### 5.run your code  
 #### 6.start your bot  
