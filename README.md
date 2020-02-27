@@ -1,22 +1,19 @@
-# Tensorflow-Telegram-Bot
+# Tensorflow-ChatBots (version 0.0.0)
 Telegram/Slack Chatbot class which can be used as keras custom callback.
+
 # How to Download
+
 ## from source
 ### 1.git clone https://github.com/Yeachan-Heo/Tensorflow-ChatBots.git
 ### 2.python setup.py build
 ### 3.python setup.py install
-## via pip
-### 1.pip install Tensorflow-ChatBots
-# How to use
-#### 1.create your Telegram bot and get it's token as explained in https://telegram.org/faq#bots  
-#### 2.add your bot as your telegram friend  
-#### 3.go to your code, add "from ttb import TelegramBotCallback" at the top 
-#### 4.and add TelegramBotCallback(token="your token") to callbacks when calling Model.fit() method.
-#### 5.run your code  
-#### 6.start your bot  
-#### 7.use command /help to learn some commands  
-#### 8.enjoy your training  
-#### 9.you're welcome XD  
 
-![Alt Image text](/images/example-1.jpg?raw=true "example")
-![Alt Image text](/images/example-2.jpg?raw=true)
+## via pip
+### 1.pip install Tensorflow-Chatbots
+
+# Telegram Examples
+![Alt Image text](/images/telegram_example_1.png?raw=true "example")
+![Alt Image text](/images/telegram_example_2.png?raw=true)
+
+# Slack Examples
+comming soon!

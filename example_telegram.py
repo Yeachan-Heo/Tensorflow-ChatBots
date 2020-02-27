@@ -1,5 +1,4 @@
 from tensorflow_chatbots.ttb.callback import TelegramBotCallback
-# tensorflow와 tf.keras를 임포트합니다
 import tensorflow as tf
 from tensorflow import keras
 
