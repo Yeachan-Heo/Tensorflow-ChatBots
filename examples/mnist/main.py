@@ -1,4 +1,5 @@
 # referenced from tensorflow.org
+
 from tensorflow_chatbots.ttb.callback import TelegramBotCallback
 import tensorflow as tf
 from tensorflow import keras
@@ -29,4 +30,4 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 if __name__ == "__main__":
-    model.fit(train_images, train_labels, validation_data=(test_images, test_labels), epochs=1100, callbacks=[TelegramBotCallback(token)])
+    model.fit(train_images, train_labels, validation_data=(test_images, test_labels), epochs=4, callbacks=[TelegramBotCallback(token)])
