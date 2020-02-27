@@ -243,7 +243,7 @@ class SlackBotCallback(callbacks.Callback):
         self.step()
 
     def on_train_end(self, logs=None):
-        for x in range(10):
+        for x in list(self._current_status.keys()):
             self._command_plot(message=f"/plot {x}")
         self._command_status(message="/status all")
 

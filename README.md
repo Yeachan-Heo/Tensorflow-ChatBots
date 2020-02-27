@@ -1,4 +1,4 @@
-# Tensorflow-ChatBots (version 0.0.0)
+# Tensorflow-ChatBots (version 0.0.1)
 Telegram/Slack Chatbot class which can be used as keras custom callback.
 
 # How to Download
