@@ -14,6 +14,6 @@ Telegram/Slack Chatbot class which can be used as keras custom callback.
 # Telegram Examples
 ![Alt Image text](/images/telegram_example_1.png?raw=true "example")
 ![Alt Image text](/images/telegram_example_2.png?raw=true)
-
+![Alt Image text](/images/telegram_example_3.png?raw=true)
 # Slack Examples
 comming soon!

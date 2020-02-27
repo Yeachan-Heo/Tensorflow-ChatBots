@@ -32,3 +32,13 @@ class TelegramBotCallback(SlackBotCallback):
             files = {'photo': open('plot.png', 'rb')}
             data = {'chat_id': self._chat_id}
             requests.post(url, files=files, data=data)
+
+    def _send_file(self, file_path=None, **kwargs):
+        url = f"https://api.telegram.org/bot{self._token}/sendDocument"
+        try:
+            files = {'document': open(file_path, 'rb')}
+        except:
+            files = None
+            pass
+        data = {'chat_id': self._chat_id}
+        requests.post(url, files=files, data=data)

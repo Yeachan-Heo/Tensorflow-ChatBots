@@ -3,6 +3,7 @@ from tensorflow.keras import *
 from slacker import Slacker
 from functools import reduce
 
+import os
 import re
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,6 +34,8 @@ class SlackBotCallback(callbacks.Callback):
             self._command_plot(message)
         elif re.match("/set ", message):
             self._command_set(message)
+        elif re.match("/get ", message):
+            self._command_get(message)
         elif re.match("/start", message):
             self._command_start()
         elif re.match("/help", message):
@@ -67,10 +70,10 @@ class SlackBotCallback(callbacks.Callback):
         title = self._generate_variable_changed_title(variable_name)
         self._send_message(text=text, title=title)
 
-    def _send_file(self, **kwargs):
+    def _send_file(self, file_path=None, **kwargs):
         # chaneels, file, title, filetype
         # reference: https://talkingaboutme.tistory.com/entry/TIP-message-sending-file-uploading-with-slackclient
-        self._bot.files.upload(channels=self._channel, **kwargs)
+        self._bot.files.upload(channels=self._channel, file=file_path)
 
     def _generate_invalid_argument_text(self, arguments):
         invalid_argument_text = f"{reduce(lambda x, y: x + ' ' + y, arguments)}"
@@ -205,8 +208,11 @@ class SlackBotCallback(callbacks.Callback):
                 /plot all: plots all value of all argument in one figure
         /set:
             usage:
-                /set lr <value>, sets learning rate
-                /set <variable_name> <value>, sets variable in the variable holder
+                /set lr <value>: sets learning rate
+                /set <variable_name> <value>: sets variable in the variable holder
+        /get:
+            usage:
+                /get <filepath>: sends file
         if you can't get it, why don't you just try?
         """
         return help_text
@@ -230,6 +236,26 @@ class SlackBotCallback(callbacks.Callback):
     def _generate_invalid_title(self):
         invalid_title = "Invalid Command Usage"
         return invalid_title
+
+    def _command_get(self, message):
+        arguments = message[re.match("/get ", message).end():].split(" ")
+        for file_path in arguments:
+            self._send_file(file_path) \
+                if os.path.exists(file_path) \
+                else self._send_invalid_file_message(file_path)
+
+    def _send_invalid_file_message(self, file_path):
+        text = self._generate_invalid_file_text(file_path)
+        title = self._generate_invalid_file_title()
+        self._send_message(text=text, title=title)
+
+    def _generate_invalid_file_text(self, file_path):
+        invalid_file_text = f"{file_path} doesn't exists"
+        return invalid_file_text
+
+    def _generate_invalid_file_title(self):
+        invalid_file_title = "Invalid File"
+        return invalid_file_title
 
     def on_train_begin(self, logs=None):
         self._command_start()
