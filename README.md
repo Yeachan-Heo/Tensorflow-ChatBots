@@ -3,7 +3,7 @@ Telegram/Slack Chatbot class which can be used as keras custom callback.
 
 # How to Download
 
-## from source
+## from source(recommended)
 ### 1.git clone https://github.com/Yeachan-Heo/Tensorflow-ChatBots.git
 ### 2.python setup.py build
 ### 3.python setup.py install
