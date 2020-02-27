@@ -4,7 +4,7 @@ class VariableHolder:
 
     def add_variables(self, **kwargs):
         for name, value in kwargs.items():
-            exec(f"self.{name} = {float(value)}")
+            exec(f"self.{name} = {value}")
 
     def set_value(self, variable_name: str, value: float):
         if variable_name in dir(self)[28:]:
