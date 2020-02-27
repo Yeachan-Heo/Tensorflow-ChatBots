@@ -1,10 +1,11 @@
+# referenced from tensorflow.org
 from tensorflow_chatbots.ttb.callback import TelegramBotCallback
 import tensorflow as tf
 from tensorflow import keras
 
-token = "1045007850:AAEp0L3UN12EswG5O7cRzR7foZQmsuEXNHs"
+token = "your token"
 if token == "your token":
-  print("read instructions in the https://github.com/Yeachan-Heo/Tensorflow-Chatbots.git, you have to use your token")
+    token = input("please enter your telegram bot token")
 # 헬퍼(helper) 라이브러리를 임포트합니다
 
 print(tf.__version__)
