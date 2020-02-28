@@ -1,6 +1,6 @@
 from ppo import PPO
 
-ppo = PPO(token="'1101668170:AAHBnU89Ap-6cLpCIdvIKqfWSDkfi5q4Kvk'",
+ppo = PPO(token="'1124009259:AAGp7_MhhBBVbxRBysT7YDR5246zfqOXF0Q'",
           is_continous=True,
           state_size=3,
           action_size=1,
