@@ -17,8 +17,11 @@ class TelegramBotCallback(SlackBotCallback):
     def _send_message(self, **kwargs):
         self._bot.sendMessage(chat_id=self._chat_id, text=kwargs["title"] + "\n" + kwargs["text"])
 
-    def _receive_message(self) -> str:
-        return self._bot.getUpdates()[-1].message.text
+    def _receive_message(self):
+        updates = self._bot.getUpdates()
+        if not updates:
+            return None
+        return updates[-1].message.text
 
     # gets chat id
     def _get_chat_id(self) -> str:

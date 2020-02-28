@@ -53,7 +53,7 @@ class SlackBotCallback(callbacks.Callback):
 
     def _is_updaten(self, message):
         updaten = False \
-            if message == self._previous_message \
+            if (message == self._previous_message or message is None) \
             else True
         self._previous_message = message
         return updaten
@@ -84,7 +84,7 @@ class SlackBotCallback(callbacks.Callback):
         return invalid_argument_text
 
     def _generate_variable_changed_text(self, prev_value, current_value):
-        variable_changed_text = f"({round(prev_value, 4)}->{round(current_value, 4)})"
+        variable_changed_text = f"({round(current_value, 4)})"
         return variable_changed_text
 
     def _generate_invalid_argument_title(self):
@@ -92,7 +92,7 @@ class SlackBotCallback(callbacks.Callback):
         return invalid_argument_title
 
     def _generate_variable_changed_title(self, variable_name):
-        variable_changed_title = f"{variable_name} has changed"
+        variable_changed_title = f"{variable_name} has changed to"
         return variable_changed_title
 
     def _is_valid_arguments(self, arguments):

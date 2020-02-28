@@ -10,3 +10,5 @@ debug
 # 0.0.4
 ## add command: /bash
 via command /bash, we can execute bash commands and check output
+# 0.0.5
+debug

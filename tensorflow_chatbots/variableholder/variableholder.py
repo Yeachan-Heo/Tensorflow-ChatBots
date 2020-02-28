@@ -7,8 +7,9 @@ class VariableHolder:
             exec(f"self.{name} = {value}")
 
     def set_value(self, variable_name: str, value: float):
-        if variable_name in dir(self)[28:]:
-            prev_value = exec(f"self.{variable_name}")
+        prev_value = None
+        if variable_name in dir(self):
+            exec(f"prev_value = self.{variable_name}")
             exec(f"self.{variable_name} = {value}")
             success = True
         else:
