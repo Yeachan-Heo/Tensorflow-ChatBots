@@ -3,6 +3,7 @@ setup.py
 Tensorflow_ChatBots.egg-info/PKG-INFO
 Tensorflow_ChatBots.egg-info/SOURCES.txt
 Tensorflow_ChatBots.egg-info/dependency_links.txt
+Tensorflow_ChatBots.egg-info/requires.txt
 Tensorflow_ChatBots.egg-info/top_level.txt
 tensorflow_chatbots/__init__.py
 tensorflow_chatbots/tsb/__init__.py

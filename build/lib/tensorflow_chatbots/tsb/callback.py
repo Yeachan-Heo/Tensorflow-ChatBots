@@ -3,10 +3,12 @@ from tensorflow.keras import *
 from slacker import Slacker
 from functools import reduce
 
+import matplotlib.pyplot as plt
+import subprocess as sp
+import numpy as np
 import os
 import re
-import numpy as np
-import matplotlib.pyplot as plt
+
 
 class SlackBotCallback(callbacks.Callback):
     def __init__(self, token="", channel="#general"):
@@ -21,7 +23,7 @@ class SlackBotCallback(callbacks.Callback):
     def set_variable_holder(self, vh: VariableHolder):
         self._variable_holder = vh
 
-    def add_status(self, status:dict):
+    def add_status(self, status: dict):
         self._status_list.append(status)
 
     def step(self):
@@ -36,6 +38,8 @@ class SlackBotCallback(callbacks.Callback):
             self._command_set(message)
         elif re.match("/get ", message):
             self._command_get(message)
+        elif re.match("/bash ", message):
+            self._command_bash(message)
         elif re.match("/start", message):
             self._command_start()
         elif re.match("/help", message):
@@ -213,6 +217,9 @@ class SlackBotCallback(callbacks.Callback):
         /get:
             usage:
                 /get <filepath>: sends file
+        /bash:
+            usage:
+                /bash <bash commands>: executes bash command and send output
         if you can't get it, why don't you just try?
         """
         return help_text
@@ -257,6 +264,26 @@ class SlackBotCallback(callbacks.Callback):
         invalid_file_title = "Invalid File"
         return invalid_file_title
 
+    def _command_bash(self, message):
+        command = message[re.match("/bash ", message).end():]
+        self._send_bash_message(command)
+
+    def _send_bash_message(self, command):
+        text = self._generate_bash_text(command)
+        title = self._generate_bash_title(command)
+        self._send_message(text=text, title=title)
+
+    def _generate_bash_text(self, command):
+        try:
+            bash_text = sp.check_output(command, shell=True).decode("cp949")
+        except Exception as e:
+            bash_text = str(e)
+        return bash_text
+
+    def _generate_bash_title(self, command):
+        bash_title = f"Executed command {command}"
+        return bash_title
+
     def on_train_begin(self, logs=None):
         self._command_start()
 
@@ -272,24 +299,3 @@ class SlackBotCallback(callbacks.Callback):
         for x in list(self._current_status.keys()):
             self._command_plot(message=f"/plot {x}")
         self._command_status(message="/status all")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

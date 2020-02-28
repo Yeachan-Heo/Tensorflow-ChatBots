@@ -1,0 +1,6 @@
+tensorflow
+gym
+numpy
+numba
+matplotlib
+slacker

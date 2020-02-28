@@ -7,3 +7,6 @@ debug
 via command /get, we can get files in local pc. (tensorflow models, logs, etc..)
 # 0.0.3
 debug
+# 0.0.4
+## add command: /bash
+via command /bash, we can execute bash commands and check output
