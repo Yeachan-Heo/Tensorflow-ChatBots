@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import tensorflow as tf
 
@@ -6,6 +7,26 @@ class Transition(object):
     def __init__(self, state, action, reward, next_state, done, prob):
         self.state, self.action, self.reward, self.next_state, self.done, self.prob \
             = state, action, reward, next_state, done, prob
+
+
+class Timer(object):
+    def __init__(self):
+        self.s = 0
+        self.e = 0
+        self.hist = []
+
+    def initialize(self):
+        self.s = time.time()
+
+    def time(self):
+        self.e = time.time()
+        time_sec = self.e - self.s
+        self.hist.append(time_sec)
+        return time_sec
+
+    @property
+    def mean_time(self):
+        return np.mean(self.hist)
 
 
 def split_transitions(transitions: [Transition]):

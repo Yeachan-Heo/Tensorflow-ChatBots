@@ -5,6 +5,7 @@ from functools import reduce
 
 import matplotlib.pyplot as plt
 import subprocess as sp
+import pandas as pd
 import numpy as np
 import os
 import re
@@ -14,11 +15,16 @@ class SlackBotCallback(callbacks.Callback):
     def __init__(self, token="", channel="#general"):
         super().__init__()
         self._bot = Slacker(token)
-        self._bot.chat.update
         self._channel = channel
         self._status_list = []
         self._variable_holder: VariableHolder or None = None
         self._previous_message = None
+
+    def to_csv(self):
+        datas = self._get_plot_datas(list(self._current_status.keys()))
+        df_dict = dict(zip(list(self._current_status.keys()), datas))
+        df = pd.DataFrame(df_dict)
+        df.to_csv("./log.csv")
 
     def set_variable_holder(self, vh: VariableHolder):
         self._variable_holder = vh
@@ -27,25 +33,28 @@ class SlackBotCallback(callbacks.Callback):
         self._status_list.append(status)
 
     def step(self):
-        message = self._receive_message()
-        if not self._is_updaten(message):
-            return
-        if re.match("/status ", message):
-            self._command_status(message)
-        elif re.match("/plot ", message):
-            self._command_plot(message)
-        elif re.match("/set ", message):
-            self._command_set(message)
-        elif re.match("/get ", message):
-            self._command_get(message)
-        elif re.match("/bash ", message):
-            self._command_bash(message)
-        elif re.match("/start", message):
-            self._command_start()
-        elif re.match("/help", message):
-            self._command_help()
-        else:
-            self._command_invalid(message)
+        try:
+            message = self._receive_message()
+            if not self._is_updaten(message):
+                return
+            if re.match("/status ", message):
+                self._command_status(message)
+            elif re.match("/plot ", message):
+                self._command_plot(message)
+            elif re.match("/set ", message):
+                self._command_set(message)
+            elif re.match("/get ", message):
+                self._command_get(message)
+            elif re.match("/bash ", message):
+                self._command_bash(message)
+            elif re.match("/start", message):
+                self._command_start()
+            elif re.match("/help", message):
+                self._command_help()
+            else:
+                self._command_invalid(message)
+        except Exception as e:
+            self._send_message(title="An Error Occured", text=str(e))
 
     @property
     def _current_status(self):

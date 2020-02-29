@@ -24,8 +24,8 @@ class PPO(object):
         self._bot = TelegramBotCallback(token=self._vh.token)
         self._bot.set_variable_holder(self._vh)
         self.optimizer = optimizers.Adam
-        self.train_time_log = []
-
+        self.episode_timer = Timer()
+        self.train_timer = Timer()
     def set_env(self, env: gym.Env or str):
         self._env = env \
             if isinstance(env, gym.Env) \
@@ -56,6 +56,7 @@ class PPO(object):
 
     def train(self, transitions):
         if len(transitions) >= self._vh.sample_size:
+            self.train_timer.initialize()
             for update in range(int(self._vh.updates_n)):
                 random.shuffle(transitions)
                 for transition_batch in to_batch(transitions, self._vh.batch_size):
@@ -69,6 +70,7 @@ class PPO(object):
                     train_policy_net(self._policy_net, self.optimizer(self._vh.lr_policy_net), self._vh.epsilon,
                                      states, old_actions, old_probs, advantages)
                     self._bot.step()
+            self.train_timer.time()
             transitions.clear()
 
     def save_model(self):
@@ -80,6 +82,7 @@ class PPO(object):
     def __call__(self):
         transitions = []
         for episode in range(int(self._vh.total_episodes)):
+            self.episode_timer.initialize()
             state = self._env.reset()
             score = 0
             done = False
@@ -95,8 +98,10 @@ class PPO(object):
                 state = next_state
                 self.train(transitions)
                 timestep += 1
+            self.episode_timer.time()
             self._bot.add_status(
                 {"episode": episode, "score": score[0], "avg_prob": np.mean(probs),
-                 "cpu_percent": psutil.cpu_percent(), "timestep": timestep})
+                 "cpu_percent": psutil.cpu_percent(), "timestep": timestep,
+                 "train_time_avg": self.train_timer.mean_time, "episode_time_avg": self.episode_timer.time()})
             print(f"episode:{episode}")
             self.save_model()
