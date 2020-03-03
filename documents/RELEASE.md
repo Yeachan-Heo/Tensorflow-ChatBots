@@ -12,3 +12,13 @@ debug
 via command /bash, we can execute bash commands and check output
 # 0.0.5
 debug
+#0.0.6
+add to_csv
+#0.0.7
+add load_csv
+#0.0.8
+debug
+#0.0.9
+add thread
+#0.0.10
+debug

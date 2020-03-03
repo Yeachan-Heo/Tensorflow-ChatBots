@@ -2,7 +2,7 @@ from tensorflow_chatbots.variableholder.variableholder import VariableHolder
 from tensorflow.keras import *
 from slacker import Slacker
 from functools import reduce
-
+from threading import Thread
 import matplotlib.pyplot as plt
 import subprocess as sp
 import pandas as pd
@@ -17,17 +17,40 @@ class SlackBotCallback(callbacks.Callback):
         self._bot = Slacker(token)
         self._channel = channel
         self._status_list = []
+        self.load_csv()
         self._variable_holder: VariableHolder or None = None
         self._previous_message = None
 
-    def to_csv(self):
+    def _thread_target(self):
+        while True:
+            try:
+                self.step()
+            except:
+                pass
+
+
+    def get_thread(self):
+        return Thread(target=self._thread_target)
+
+    def to_csv(self, path="./log.csv"):
         datas = self._get_plot_datas(list(self._current_status.keys()))
         df_dict = dict(zip(list(self._current_status.keys()), datas))
         df = pd.DataFrame(df_dict)
-        df.to_csv("./log.csv")
+        df.to_csv(path)
+
+    def load_csv(self, path="./log.csv"):
+        if os.path.exists(path):
+            df = pd.read_csv(path)
+            data = df.to_numpy()
+            dicts = list(map(lambda x: dict(zip(df.columns, x)), data))
+        else:
+            dicts = []
+        self._status_list = dicts
 
     def set_variable_holder(self, vh: VariableHolder):
         self._variable_holder = vh
+        if self._current_status:
+            self._variable_holder.add_variables(**self._current_status)
 
     def add_status(self, status: dict):
         self._status_list.append(status)
@@ -58,7 +81,10 @@ class SlackBotCallback(callbacks.Callback):
 
     @property
     def _current_status(self):
-        return self._status_list[-1]
+        try:
+            return self._status_list[-1]
+        except:
+            self._send_message(title="status not prepared", text="be patient")
 
     def _is_updaten(self, message):
         updaten = False \
@@ -295,14 +321,11 @@ class SlackBotCallback(callbacks.Callback):
 
     def on_train_begin(self, logs=None):
         self._command_start()
-
-    def on_predict_begin(self, logs=None):
-        self.step()
+        self.get_thread().start()
 
     def on_epoch_end(self, epoch, logs=None):
         logs["epoch"] = epoch
         self.add_status(logs)
-        self.step()
 
     def on_train_end(self, logs=None):
         for x in list(self._current_status.keys()):

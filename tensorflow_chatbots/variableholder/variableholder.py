@@ -1,3 +1,8 @@
+import numpy as np
+# alias
+nan = np.nan
+
+
 class VariableHolder:
     def __init__(self, **kwargs):
         self.add_variables(**kwargs)

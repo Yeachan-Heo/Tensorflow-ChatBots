@@ -4,3 +4,4 @@ numpy
 numba
 matplotlib
 slacker
+python-telegram-bot
